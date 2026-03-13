@@ -35,19 +35,23 @@
             text-align: center;
         }
 
-        .logo {
-            width: 80px;
-            height: 80px;
-            background: var(--primary-color);
-            border-radius: 20px;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-        }
+        /* Nouveau style pour cadrer le conteneur du QR code */
+.logo-container {
+    margin: 0 auto 20px; /* Centre horizontalement avec une marge en bas */
+    text-align: center;
+}
+
+/* Nouveau style pour redimensionner précisément l'image du QR code */
+.qr-image {
+    width: 150px; /* Force la largeur à 150 pixels */
+    height: 150px; /* Force la hauteur à 150 pixels */
+    padding: 10px; /* Ajoute un petit espace blanc autour du code */
+    background: white;
+    border: 2px solid var(--primary-color); /* Ajoute la bordure bleue */
+    border-radius: 15px; /* Arrondit les coins */
+    display: block; /* S'assure que les marges automatiques fonctionnent */
+    margin: 0 auto; /* Centre l'image dans son conteneur */
+}
 
         h1 { margin: 0 0 10px; font-size: 24px; }
         p { color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 30px; }
