@@ -105,6 +105,32 @@
         }
 
         .footer { margin-top: 20px; font-size: 12px; color: #bbb; }
+        .btn-web {
+    display: block;
+    background: #6c757d; /* Gris élégant pour différencier du vert de l'APK */
+    color: white;
+    padding: 15px;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 15px; /* Espace entre les deux boutons */
+    transition: background 0.2s, transform 0.2s;
+    text-align: center;
+}
+
+.btn-web:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* Optionnel : ajouter une petite icône ou un texte d'aide */
+.device-support {
+    font-size: 11px;
+    color: #888;
+    margin-top: 5px;
+    text-align: center;
+}
     </style>
 </head>
 <body>
@@ -122,6 +148,8 @@
         Télécharger l'APK
     </a>
 
+<a href="./jeu/index.html" class="btn-web">Jouer en ligne (iOS & Navigateur)</a>
+    
     <div class="instructions">
         <h3>Comment installer ?</h3>
         <div class="step">
