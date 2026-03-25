@@ -1,0 +1,264 @@
+
+<html lang="fr">
+<head>
+
+
+<title>BlindBuzz Ì†ºÌæµ</title>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+  :root {
+    --red:#FF2D55; --yellow:#FFD60A; --blue:#0A84FF; --green:#30D158;
+    --purple:#BF5AF2; --orange:#FF9F0A; --dark:#1C1C1E; --darker:#0D0D0F;
+    --card:#2C2C2E; --card2:#3A3A3C; --text:#FFF; --dim:;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{font-family:;min-height:100vh;overflow-x:hidden;user-select:none;}
+
+  .screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;position:relative;overflow:hidden;}
+  .screen.active{display:flex;}
+
+  .bg-particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .particle{position:absolute;border-radius:50%;opacity:.07;animation:float linear infinite;}
+  @keyframes float{0%{transform:;opacity:0;}}
+
+  .logo{font-family:'Boogaloo',cursive;font-size:52px;letter-spacing:2px;line-height:1;}
+  .logo .r{color:;}
+  .logo-sub{font-size:;margin-top:4px;}
+
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:340px;padding:17px 24px;border:none;border-radius:18px;font-family:'Nunito',sans-serif;font-weight:900;font-size:17px;cursor:pointer;transition:transform .1s,box-shadow .1s;position:relative;z-index:1;color:white;}
+  .btn:;}
+  .btn-red{background:;}
+  .btn-blue{background:;}
+  .btn-green{background:;}
+  .btn-yellow{background:;}
+  .btn-ghost{background:;box-shadow:none;font-size:15px;}
+
+  .field{width:100%;max-width:340px;position:relative;z-index:1;}
+  .field label{display:;margin-bottom:7px;}
+  .field input{width:;outline:none;transition:border-color .2s;-webkit-appearance:none;}
+  .field input:;}
+  .field input:;font-weight:400;}
+
+  .form{display:flex;flex-direction:column;gap:18px;align-items:center;width:100%;}
+  .back{position:;font-size:20px;cursor:pointer;z-index:10;}
+
+  .toast{position:;white-space:nowrap;max-width:90vw;}
+  .toast.show{transform:;}
+
+  .code-chip{background:;border-radius:18px;padding:18px 28px;text-align:center;width:100%;max-width:340px;z-index:1;}
+  .code-chip .lbl{font-size:;}
+  .code-chip .code{font-family:;}
+  .code-chip .hint{font-size:;margin-top:2px;}
+
+  .plist{width:100%;max-width:340px;z-index:1;}
+  .plist h3{font-size:;margin-bottom:10px;}
+  .prow{display:;border-radius:13px;padding:11px 14px;margin-bottom:8px;animation:slideIn .3s ease;}
+  .prow.me{border:1.5px solid rgba(255,255,255,.15);}
+  @keyframes slideIn{from{opacity:;}}
+  .av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .pname{flex:1;font-weight:700;font-size:15px;}
+  .pscore{font-weight:;}
+  .badge-adm{font-size:;padding:2px 7px;border-radius:20px;font-weight:700;}
+  .offline{opacity:.4;}
+
+  #s-game{justify-content:space-between;padding:40px 20px 24px;}
+  .gmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+  .chip{background:;border-radius:11px;padding:8px 14px;font-weight:900;font-size:13px;}
+
+  .timer-ring{position:relative;display:inline-block;}
+  .t-svg{transform:;}
+  .t-bg{fill:;stroke-width:7;}
+  .t-bar{fill:none;stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s;}
+  .t-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Boogaloo',cursive;font-size:40px;}
+
+  .bwrap{flex:1;display:flex;align-items:center;justify-content:center;z-index:1;}
+  .buzzer{width:;transition:transform .08s,box-shadow .08s;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .buzzer:;}
+  .buzzer:;}
+  .buzzer.buzzed{background:;}
+  .buzzer.locked{background:;cursor:not-allowed;}
+  .buzzer.idle{animation:bpulse 1.2s ease-in-out infinite;}
+  @keyframes bpulse{0%,100%{transform:;}}
+  .bsub{font-size:13px;letter-spacing:3px;opacity:.75;margin-top:4px;}
+
+  .bres{width:100%;max-width:340px;min-height:72px;display:flex;align-items:center;justify-content:center;z-index:1;}
+  .wcard{background:;}
+  @keyframes popIn{from{transform:;opacity:1;}}
+  .wlbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.65;font-weight:700;}
+  .wname{font-family:;}
+
+  .abar{position:;}
+  .abar .btn{max-width:none;flex:1;padding:13px;font-size:14px;border-radius:13px;}
+
+  #s-score{justify-content:flex-start;padding-top:52px;}
+  .sheader{text-align:center;margin-bottom:28px;z-index:1;}
+  .sheader h2{font-family:'Boogaloo',cursive;font-size:34px;}
+  .lb{width:100%;max-width:340px;z-index:1;margin-bottom:20px;}
+  .lbrow{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:16px;margin-bottom:8px;animation:slideIn .4s ease both;}
+  .lbrow:;}
+  .lbrow:;}
+  .lbrow:;}
+  .lbrow:;}
+  .lbrank{font-family:'Boogaloo',cursive;font-size:21px;width:30px;text-align:center;}
+  .lbname{flex:1;font-weight:700;font-size:16px;}
+  .lbpts{font-family:;}
+  .lbpts span{font-size:;}
+
+  .conf{position:fixed;border-radius:2px;animation:cfall linear forwards;z-index:999;pointer-events:none;}
+  @keyframes cfall{0%{transform:;opacity:0;}}
+
+  .conn-overlay{position:;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:500;gap:16px;}
+  .conn-overlay p{font-weight:;font-size:15px;}
+  .spinner{width:40px;height:40px;border:4px solid rgba(255,255,255,.1);border-top-color:;border-radius:50%;animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:;}}
+  .dots::after{content:'';animation:dots 1.5s steps(3,end) infinite;}
+  @keyframes dots{0%{content:'';}33%{content:'.';}66%{content:'..';}100%{content:'...'}}
+
+  .waiting{text-align:;font-size:14px;z-index:1;animation:bpulse 2s ease infinite;}
+  .note{position:absolute;font-size:64px;opacity:.1;animation:bpulse 4s ease-in-out infinite;z-index:0;}
+  .text-dim{color:;font-size:13px;}
+  .gap-sm{height:10px;} .gap-md{height:18px;} .gap-lg{height:28px;}
+</style>
+</head>
+<body>
+
+<div class="bg-particles" id="particles"></div>
+<div class="toast" id="toast"></div>
+<div class="conn-overlay" id="overlay" style="display:none;">
+  <div class="spinner"></div>
+  <p>Connexion au serveur<span class="dots"></span></p>
+</div>
+
+
+<div class="screen active" id="s-home">
+  <span class="note" style="top:36px;right:28px;animation-delay:.5s;">Ì†ºÌæµ</span>
+  <span class="note" style="bottom:100px;left:18px;font-size:48px;animation-delay:1.2s;">Ì†ºÌæ∂</span>
+  <div style="text-align:center;margin-bottom:44px;position:relative;z-index:1;">
+    <div class="logo"><span class="r">Blind</span><span class="y">Buzz</span><span class="b">!</span></div>
+    <div class="logo-sub">Le blind test connect&eacute;</div>
+    <div style="font-size:46px;margin-top:14px;">Ì†ºÌæôÔ∏è</div>
+  </div>
+  <div class="form">
+    <button class="btn btn-red">Ì†ºÌæÆ Rejoindre une partie</button>
+    <button class="btn btn-blue">Ì†ΩÌ±ë Cr&eacute;er une partie</button>
+  </div>
+</div>
+
+
+<div class="screen" id="s-join">
+  <button class="back">&larr;</button>
+  <div style="text-align:center;margin-bottom:28px;position:relative;z-index:1;">
+    <div style="font-size:46px;">Ì†ºÌæÆ</div>
+    <h2 style="font-family:'Boogaloo',cursive;font-size:30px;margin-top:8px;">Rejoindre</h2>
+    <p class="text-dim">Entre le code et ton pseudo</p>
+  </div>
+  <div class="form">
+    <div class="field"><label>Code de la salle</label><input id="j-code" type="text" maxlength="6"></div>
+    <div class="field"><label>Ton pseudo</label><input id="j-name" type="text" maxlength="18"></div>
+    <button class="btn btn-red">Ì†ΩÌ∫Ä Rejoindre !</button>
+    <button class="btn btn-ghost">Annuler</button>
+  </div>
+</div>
+
+
+<div class="screen" id="s-create">
+  <button class="back">&larr;</button>
+  <div style="text-align:center;margin-bottom:28px;position:relative;z-index:1;">
+    <div style="font-size:46px;">Ì†ΩÌ±ë</div>
+    <h2 style="font-family:'Boogaloo',cursive;font-size:30px;margin-top:8px;">Nouvelle partie</h2>
+    <p class="text-dim">Tu seras l&#39;admin de la salle</p>
+  </div>
+  <div class="form">
+    <div class="field"><label>Ton pseudo (admin)</label><input id="c-name" type="text" maxlength="18"></div>
+    <button class="btn btn-blue">‚ú® Cr&eacute;er la salle !</button>
+    <button class="btn btn-ghost">Annuler</button>
+  </div>
+</div>
+
+
+<div class="screen" id="s-lobby" style="justify-content:flex-start;padding-top:48px;">
+  <div style="text-align:center;margin-bottom:24px;z-index:1;">
+    <div style="font-size:28px;">‚è≥</div>
+    <h2 style="font-family:'Boogaloo',cursive;font-size:26px;">Salle d&#39;attente</h2>
+  </div>
+  <div class="code-chip">
+    <div class="lbl">Code de la salle</div>
+    <div class="code" id="lobby-code">????</div>
+    <div class="hint">Partage ce code avec tes amis !</div>
+  </div>
+  <div class="gap-md"></div>
+  <div class="plist">
+    <h3>Joueurs (<span id="lobby-count">0</span>)</h3>
+    <div id="lobby-players"></div>
+  </div>
+  <div class="gap-md"></div>
+  <div class="waiting">En attente du lancement<span class="dots"></span></div>
+  <div id="lobby-abar" style="display:;z-index:100;">
+    <button class="btn btn-green" style="max-width:none;">Ì†ºÌæµ Lancer le blind test !</button>
+  </div>
+</div>
+
+
+<div class="screen" id="s-game">
+  <div style="width:100%;max-width:360px;z-index:1;">
+    <div class="gmeta">
+      <div class="chip">Ì†ºÌæµ Manche <span id="g-round">1</span></div>
+      <div class="chip">Ì†ºÌøÜ <span id="g-score">0</span> pt<span id="g-scores">s</span></div>
+    </div>
+    <div style="text-align:center;">
+      <div class="timer-ring">
+        
+          
+          
+        
+        <div class="t-num" id="t-num">30</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bwrap">
+    <button class="buzzer idle" id="buzz-btn">
+      BUZZ!<span class="bsub">APPUIE !</span>
+    </button>
+  </div>
+
+  <div class="bres" id="bres"></div>
+
+  <div class="abar" id="game-abar" style="display:none;">
+    <button class="btn btn-green">‚úÖ Bonne</button>
+    <button class="btn btn-red">‚ùå Fausse</button>
+    <button class="btn btn-blue" style="flex:0.6;font-size:12px;">‚è≠ Suite</button>
+    <button class="btn btn-ghost" style="flex:0.5;font-size:12px;">Ì†ºÌøÅ Fin</button>
+  </div>
+</div>
+
+
+<div class="screen" id="s-score">
+  <div class="sheader">
+    <div style="font-size:52px;">Ì†ºÌøÜ</div>
+    <h2>Classement final</h2>
+    <p class="text-dim" id="score-sub">Fin de partie !</p>
+  </div>
+  <div class="lb" id="lb"></div>
+  <div class="form" style="margin-bottom:36px;">
+    <button class="btn btn-yellow" id="btn-replay" style="display:none;">Ì†ΩÌ¥Ñ Rejouer !</button>
+    <button class="btn btn-ghost">Ì†ºÌø† Accueil</button>
+  </div>
+</div>
+
+
+
+</body>
+</html>
